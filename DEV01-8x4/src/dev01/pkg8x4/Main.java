@@ -18,7 +18,7 @@ import processing.core.PApplet;
 public class Main extends PApplet {
 
     final static Logger logger = Logger.getLogger(Main.class);
-    ArrayList<Klacht> klachten = new ArrayList();
+    ArrayList<Complaint> complaints = new ArrayList();
     ConvertGPS convert = new ConvertGPS();
 
     /**
@@ -33,7 +33,7 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-        klachten = CSVParser.read();
+        complaints = CSVParser.read();
     }
 
     @Override
@@ -53,7 +53,11 @@ public class Main extends PApplet {
     @Override
     public void keyPressed(){
         try{
-            convert.getDegree(klachten);
-        } catch(Exception e){logger.info("Wrong with converting..");}
+            ArrayList complain = convert.getGPS(complaints);
+            convert.writeToFile(complain);
+
+        } catch(Exception e){
+            logger.info(e);
+        }
     }
 }

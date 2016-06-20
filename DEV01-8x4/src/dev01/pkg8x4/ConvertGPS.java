@@ -7,9 +7,12 @@ package dev01.pkg8x4;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
-import com.google.maps.GeocodingApiRequest;
 import com.google.maps.model.GeocodingResult;
+import com.opencsv.CSVWriter;
+import java.io.FileWriter;
 import java.util.ArrayList;
+import org.apache.log4j.Logger;
+import processing.core.PVector;
 
 /**
  *
@@ -17,24 +20,50 @@ import java.util.ArrayList;
  */
 public class ConvertGPS {
 
-    GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyAsqd3XkCE6DEiUry-SsJX3E38IZSZtsYY");
+    private final static Logger logger = Logger.getLogger(ConvertGPS.class);
 
-    public ArrayList<double[]> getDegree(ArrayList<Klacht> klachten) {
-        ArrayList<double[]> longlat = new ArrayList();
+    public ArrayList<Complaint> getGPS(ArrayList<Complaint> complains) {
+        ArrayList<Complaint> klachtArray = new ArrayList();
+        String country = "The Netherlands";
+
         try {
-            for (int i = 0; i < klachten.size(); i++) {
+            for (Complaint complain : complains) {
+                GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyAsqd3XkCE6DEiUry-SsJX3E38IZSZtsYY");
                 GeocodingResult[] results = GeocodingApi.geocode(context,
-                        klachten.get(i).getStraatnaam() + "," + klachten.get(i).getPostcode() + "," + klachten.get(i).getPlaatsnaam()).await();
+                        complain.getPostcode() + ", " + country).await();
 
-                double[] codes = {results[0].geometry.location.lng,
-                    results[0].geometry.location.lat
-                };
+                logger.info(results[0].geometry.location.lat + ":" + results[0].geometry.location.lng);
 
-                longlat.add(codes);
+                float lat = (float) results[0].geometry.location.lat;
+                float lng = (float) results[0].geometry.location.lng;
+
+                complain.setLatitude(lat);
+                complain.setLongitude(lng);
+
+                klachtArray.add(complain);
+
+                logger.info("Coordinates Set!");
             }
         } catch (Exception e) {
-            System.out.println("Oooopppss");
+            logger.info(e);
         }
-        return longlat;
+
+        return klachtArray;
+    }
+
+    public void writeToFile(ArrayList<Complaint> complains) {
+        try {
+            CSVWriter writer = new CSVWriter(new FileWriter("entries.csv"), '\t');
+
+            String[] entries = null;
+            for (int i = 0; i < complains.size(); i++) {
+                entries[i] = complains.get(i).toString();
+            }
+            writer.writeNext(entries);
+            writer.close();
+
+        } catch (Exception e) {
+            logger.info(e);
+        }
     }
 }

@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author Johan Bos <Johan Bos at jhnbos.nl>
  */
-public class Klacht {
+public class Complaint {
     private String ingevoerd;
     private Date datum;
     private int aantal;
@@ -25,7 +25,7 @@ public class Klacht {
     private double Latitude;
     private double Longitude;
 
-    public Klacht(String ingevoerd, Date datum, int aantal, String straatnaam, String postcode, String plaatsnaam, String aardOverlast, String subOverlast, String subSubaardOverlast, Boolean terugkoppeling) {
+    public Complaint(String ingevoerd, Date datum, int aantal, String straatnaam, String postcode, String plaatsnaam, String aardOverlast, String subOverlast, String subSubaardOverlast, Boolean terugkoppeling) {
         this.ingevoerd = ingevoerd;
         this.datum = datum;
         this.aantal = aantal;
