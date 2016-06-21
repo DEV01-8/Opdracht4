@@ -17,11 +17,16 @@ import processing.core.PApplet;
  */
 public class Main extends PApplet {
 
+    //Logger4J
     final static Logger logger = Logger.getLogger(Main.class);
+    //Arraylist to put in items from CSVParser
     private ArrayList<Complaint> complaints = new ArrayList();
+    //New ConvertGPS objetc
     private final ConvertGPS convert = new ConvertGPS();
-    private ArrayList complain;
-    private WriteFile writer = new WriteFile();
+    //ArrayList to put in converted complaints in
+    private ArrayList<Complaint> newComplaints;
+    //CSVWriter to write arraylist items to csv file
+    private final WriteFile writer = new WriteFile();
 
     /**
      * @param args the command line arguments
@@ -35,12 +40,17 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
+        /*
+         //Show message about controls
+         JOptionPane.showMessageDialog(frame, "Press 'Enter' to start converting and parsing \n"
+         + "Press 'Space' to start writing coördinates to a .csv file"
+         );
+         */
+        //Put ArrayList of Complaint object from the parser into this arraylist
         complaints = CSVParser.read();
-        
-        //Show message about controls
-        JOptionPane.showMessageDialog(frame, "Press 'Enter' to start converting and parsing \n"
-                + "Press 'Space' to start writing coördinates to a .csv file"
-        );
+        ArrayList<Complaint> inputArray = startConvert();
+        startWrite(inputArray);
+
     }
 
     @Override
@@ -53,21 +63,24 @@ public class Main extends PApplet {
 
     }
 
-    @Override
-    public void keyPressed() {
-        if (keyPressed && (key == ENTER | key == RETURN)) {
-            logger.info("Converting and parsing coordinates....");
-
-            try {
-                complain = convert.parseAndConvert(complaints);
-            } catch (Exception e) {
-            }
-
-            logger.info("Done converting and parsing!");
-        } else if (keyPressed && key == ' ') {
-            logger.info("Writing coordinates to file....");
-            writer.writeToFile(complain);
-            logger.info("Done writing coordinates to file!");
+    private ArrayList<Complaint> startConvert() {
+        try {
+            //Convert and parse objects from complaints ArrayList and put them in
+            //newComplaints ArrayList
+            logger.info("Converting started.");
+            newComplaints = convert.parseAndConvert(complaints);
+        } catch (Exception ex) {
+            logger.info(ex);
         }
+        logger.info("Converting ended.");
+
+        return newComplaints;
+    }
+
+    private void startWrite(ArrayList<Complaint> complaints) {
+        //Write items of newComplaints in a .csv file
+        logger.info("Writing started.");
+        writer.writeToFile(complaints);
+        logger.info("Writing ended.");
     }
 }
