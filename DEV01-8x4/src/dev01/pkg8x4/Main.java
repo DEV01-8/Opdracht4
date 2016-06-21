@@ -20,6 +20,7 @@ public class Main extends PApplet {
     final static Logger logger = Logger.getLogger(Main.class);
     ArrayList<Complaint> complaints = new ArrayList();
     ConvertGPS convert = new ConvertGPS();
+    ArrayList complain;
 
     /**
      * @param args the command line arguments
@@ -53,7 +54,9 @@ public class Main extends PApplet {
     @Override
     public void keyPressed(){
         try{
-            ArrayList complain = convert.getGPS(complaints);
+            complain = convert.parseAndConvert(complaints);
+            logger.info("Ready to write to file...");
+            logger.info("Writing file");
             convert.writeToFile(complain);
 
         } catch(Exception e){
