@@ -6,10 +6,10 @@
 package dev01.pkg8x4;
 
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
-
 
 /**
  *
@@ -18,9 +18,10 @@ import processing.core.PApplet;
 public class Main extends PApplet {
 
     final static Logger logger = Logger.getLogger(Main.class);
-    ArrayList<Complaint> complaints = new ArrayList();
-    ConvertGPS convert = new ConvertGPS();
-    ArrayList complain;
+    private ArrayList<Complaint> complaints = new ArrayList();
+    private final ConvertGPS convert = new ConvertGPS();
+    private ArrayList complain;
+    private WriteFile writer = new WriteFile();
 
     /**
      * @param args the command line arguments
@@ -35,6 +36,11 @@ public class Main extends PApplet {
     @Override
     public void setup() {
         complaints = CSVParser.read();
+        
+        //Show message about controls
+        JOptionPane.showMessageDialog(frame, "Press 'Enter' to start converting and parsing \n"
+                + "Press 'Space' to start writing coördinates to a .csv file"
+        );
     }
 
     @Override
@@ -44,23 +50,24 @@ public class Main extends PApplet {
 
     @Override
     public void draw() {
-        /*
-         for (int i = 0; i < 200; i++) {
-         logger.info(klachten.get(i));
-         }
-         */
-    }
-    
-    @Override
-    public void keyPressed(){
-        try{
-            complain = convert.parseAndConvert(complaints);
-            logger.info("Ready to write to file...");
-            logger.info("Writing file");
-            convert.writeToFile(complain);
 
-        } catch(Exception e){
-            logger.info(e);
+    }
+
+    @Override
+    public void keyPressed() {
+        if (keyPressed && (key == ENTER | key == RETURN)) {
+            logger.info("Converting and parsing coordinates....");
+
+            try {
+                complain = convert.parseAndConvert(complaints);
+            } catch (Exception e) {
+            }
+
+            logger.info("Done converting and parsing!");
+        } else if (keyPressed && key == ' ') {
+            logger.info("Writing coordinates to file....");
+            writer.writeToFile(complain);
+            logger.info("Done writing coordinates to file!");
         }
     }
 }

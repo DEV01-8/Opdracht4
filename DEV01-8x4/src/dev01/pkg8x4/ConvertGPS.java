@@ -43,7 +43,7 @@ public class ConvertGPS {
 
                 logger.info("Coordinates Set!");
                 
-                if(results.length == 2500){
+                if(results.length <= 2500){
                     break;
                 }
                 
@@ -55,22 +55,5 @@ public class ConvertGPS {
         return complainArray;
     }
 
-    public void writeToFile(ArrayList<Complaint> complains) {
-        try {
-            String file = "entries.csv";
-            CSVWriter writer = new CSVWriter(new FileWriter(file, true), '\n');
-
-            String[] entries = new String[complains.size()];
-            
-            for (int i = 0; i < complains.size(); i++) {
-                entries[i] = complains.get(i).toString();
-            }
-            
-            writer.writeNext(entries);
-            writer.close();
-
-        } catch (Exception e) {
-            logger.info(e);
-        }
-    }
+    
 }
