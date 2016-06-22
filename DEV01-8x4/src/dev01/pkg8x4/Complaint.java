@@ -12,10 +12,10 @@ import java.util.Date;
  * @author Johan Bos <Johan Bos at jhnbos.nl>
  */
 public class Complaint {
+
     private String ingevoerd;
     private Date datum;
     private int aantal;
-    private String straatnaam;
     private String postcode;
     private String plaatsnaam;
     private String aardOverlast;
@@ -25,11 +25,10 @@ public class Complaint {
     private double Latitude;
     private double Longitude;
 
-    public Complaint(String ingevoerd, Date datum, int aantal, String straatnaam, String postcode, String plaatsnaam, String aardOverlast, String subOverlast, String subSubaardOverlast, Boolean terugkoppeling) {
+    public Complaint(String ingevoerd, Date datum, int aantal, String postcode, String plaatsnaam, String aardOverlast, String subOverlast, String subSubaardOverlast, Boolean terugkoppeling) {
         this.ingevoerd = ingevoerd;
         this.datum = datum;
         this.aantal = aantal;
-        this.straatnaam = straatnaam;
         this.postcode = postcode;
         this.plaatsnaam = plaatsnaam;
         this.aardOverlast = aardOverlast;
@@ -46,7 +45,6 @@ public class Complaint {
         this.ingevoerd = ingevoerd;
     }
 
-   
     public Date getDatum() {
         return datum;
     }
@@ -61,14 +59,6 @@ public class Complaint {
 
     public void setAantal(int aantal) {
         this.aantal = aantal;
-    }
-
-    public String getStraatnaam() {
-        return straatnaam;
-    }
-
-    public void setStraatnaam(String straatnaam) {
-        this.straatnaam = straatnaam;
     }
 
     public String getPostcode() {
@@ -118,7 +108,7 @@ public class Complaint {
     public void setTerugkoppeling(Boolean terugkoppeling) {
         this.terugkoppeling = terugkoppeling;
     }
-    
+
     public double getLongitude() {
         return Longitude;
     }
@@ -126,7 +116,7 @@ public class Complaint {
     public void setLongitude(double Longitude) {
         this.Longitude = Longitude;
     }
-    
+
     public double getLatitude() {
         return Latitude;
     }
@@ -137,7 +127,9 @@ public class Complaint {
 
     @Override
     public String toString() {
-        return "Klacht{" + "ingevoerd=" + ingevoerd + ", datum=" + datum + ", aantal=" + aantal + ", straatnaam=" + straatnaam + ", postcode=" + postcode + ", plaatsnaam=" + plaatsnaam + ", aardOverlast=" + aardOverlast + ", subOverlast=" + subOverlast + ", subSubaardOverlast=" + subSubaardOverlast + ", terugkoppeling=" + terugkoppeling + '}';
+        return "Complaint{" + "ingevoerd=" + ingevoerd + ", datum=" + datum + ", aantal=" + aantal + ", postcode=" + postcode + ", plaatsnaam=" + plaatsnaam + ", aardOverlast=" + aardOverlast + ", subOverlast=" + subOverlast + ", subSubaardOverlast=" + subSubaardOverlast + ", terugkoppeling=" + terugkoppeling + ", Latitude=" + Latitude + ", Longitude=" + Longitude + '}';
     }
+
     
+
 }

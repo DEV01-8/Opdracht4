@@ -24,7 +24,6 @@ import org.apache.log4j.Logger;
 public class CSVParser {
 
     //ArrayList to return
-
     private static final ArrayList<Complaint> klachten = new ArrayList();
     //Logger4J
     final static Logger logger = Logger.getLogger(CSVParser.class);
@@ -53,12 +52,13 @@ public class CSVParser {
             //start time to see how long it takes
             long startTime = System.currentTimeMillis();
 
-            while ((nextLine = reader.readNext()) != null) {
+            int j = 0;
+            
+            while ((nextLine = reader.readNext()) != null && j < 101) {
                 // nextLine[] is an array of values from the line
                 String Ingevoerd = nextLine[0];
                 Date Datum = sdf.parse(nextLine[1]);
                 int Aantal = Integer.parseInt(nextLine[2]);
-                String Straat = nextLine[3];
                 String Postcode = nextLine[4];
                 String Plaats = nextLine[5];
                 String aardOverlast = nextLine[6];
@@ -67,11 +67,13 @@ public class CSVParser {
                 Boolean terugKoppeling = Boolean.parseBoolean(nextLine[9]);
 
                 //Create Complaint object and set values from above in it.
-                Complaint klacht = new Complaint(Ingevoerd, Datum, Aantal, Straat, Postcode,
+                Complaint klacht = new Complaint(Ingevoerd, Datum, Aantal, Postcode,
                         Plaats, aardOverlast, subOverlast, subSubOverlast, terugKoppeling);
 
                 //Add Complaint object to ArrayList
                 klachten.add(klacht);
+                
+                j++;
             }
 
             //Close reader
@@ -85,10 +87,8 @@ public class CSVParser {
             logger.info("Time elapsed: " + (elapsedTime / 1000) + " sec");
             logger.info("Size Array: " + klachten.size());
 
-        } catch (IOException | NumberFormatException e) {
+        } catch (IOException | NumberFormatException | ParseException e) {
             logger.info(e);
-        } catch (ParseException ex) {
-            java.util.logging.Logger.getLogger(CSVParser.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         //Return ArrayList

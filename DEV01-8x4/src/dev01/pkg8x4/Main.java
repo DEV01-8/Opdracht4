@@ -5,8 +5,8 @@
  */
 package dev01.pkg8x4;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
@@ -40,17 +40,15 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-        /*
-         //Show message about controls
-         JOptionPane.showMessageDialog(frame, "Press 'Enter' to start converting and parsing \n"
-         + "Press 'Space' to start writing coördinates to a .csv file"
-         );
-         */
         //Put ArrayList of Complaint object from the parser into this arraylist
         complaints = CSVParser.read();
         ArrayList<Complaint> inputArray = startConvert();
-        startWrite(inputArray);
-
+        
+        try {
+            startWrite(inputArray);
+        } catch (IOException ex) {
+            logger.info(ex);
+        }
     }
 
     @Override
@@ -65,8 +63,8 @@ public class Main extends PApplet {
 
     private ArrayList<Complaint> startConvert() {
         try {
-            //Convert and parse objects from complaints ArrayList and put them in
-            //newComplaints ArrayList
+            //Convert and parse objects from complaints ArrayList and
+            //put them in newComplaints ArrayList
             logger.info("Converting started.");
             newComplaints = convert.parseAndConvert(complaints);
         } catch (Exception ex) {
@@ -77,10 +75,12 @@ public class Main extends PApplet {
         return newComplaints;
     }
 
-    private void startWrite(ArrayList<Complaint> complaints) {
+    private void startWrite(ArrayList<Complaint> complaints) throws IOException {
         //Write items of newComplaints in a .csv file
         logger.info("Writing started.");
         writer.writeToFile(complaints);
         logger.info("Writing ended.");
+        
+        System.exit(0);
     }
 }

@@ -33,7 +33,7 @@ public class ConvertGPS {
         try {
             for (Complaint complain : complains) {
                 //Context to put in API Key
-                GeoApiContext context = new GeoApiContext().setApiKey(apiKey3);
+                GeoApiContext context = new GeoApiContext().setApiKey(apiKey2);
 
                 //Convert address and postal code to get Longitude and Latitude
                 GeocodingResult[] results = GeocodingApi.geocode(context,
