@@ -14,7 +14,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimeZone;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 
 /**
@@ -24,37 +23,34 @@ import org.apache.log4j.Logger;
 public class CSVParser {
 
     //ArrayList to return
-    private static final ArrayList<Complaint> klachten = new ArrayList();
     //Logger4J
-    final static Logger logger = Logger.getLogger(CSVParser.class);
+    //SimpleDateFormat
+    //Separators
+    //Skip first x amount of lines.
+    //Create filepath to csv
+    //CSVReader
+    private static final ArrayList<Complaint> klachten = new ArrayList();
+    private final static Logger logger = Logger.getLogger(CSVParser.class);
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private final static char[] separator = {';', ','};
+    private final static int skipLine = 1;
+    private final static File path = new File("C:\\dev\\klachten.csv");
+    private static CSVReader reader;
 
-    public static ArrayList<Complaint> read() {
+    public static ArrayList<Complaint> read() throws IOException {
+        logger.info("Reading CSV...");
+        sdf.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
+
+        //read csv using opencsv library
+        reader = new CSVReader(new FileReader(path), separator[0], separator[1], skipLine);
+        String[] nextLine;
+
+        logger.info("Going through CSV...");
+        int lines = 0;
+
         try {
-            logger.info("Reading CSV...");
-
-            //Create filepath to csv
-            File path = new File("C:\\dev\\klachten.csv");
-
-            //SimpleDateFormat to format date in csv to appriopriate date
-            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-            sdf.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
-            //Separators
-            char[] separator = {';', ','};
-            //Skip first x amount of lines.
-            int skipLine = 1;
-
-            //read csv using opencsv library
-            CSVReader reader = new CSVReader(new FileReader(path), separator[0], separator[1], skipLine);
-            String[] nextLine;
-
-            logger.info("Going through CSV...");
-
-            //start time to see how long it takes
-            long startTime = System.currentTimeMillis();
-
-            int j = 0;
-            
-            while ((nextLine = reader.readNext()) != null && j < 101) {
+            //if lines is higher than 2500, the max amount of queries a day is reached
+            while ((nextLine = reader.readNext()) != null && lines <= 2500) {
                 // nextLine[] is an array of values from the line
                 String Ingevoerd = nextLine[0];
                 Date Datum = sdf.parse(nextLine[1]);
@@ -72,19 +68,14 @@ public class CSVParser {
 
                 //Add Complaint object to ArrayList
                 klachten.add(klacht);
-                
-                j++;
+
+                lines++;
             }
 
             //Close reader
             reader.close();
 
-            //stop timer
-            long stopTime = System.currentTimeMillis();
-            long elapsedTime = stopTime - startTime;
-
             logger.info("Done going through csv!");
-            logger.info("Time elapsed: " + (elapsedTime / 1000) + " sec");
             logger.info("Size Array: " + klachten.size());
 
         } catch (IOException | NumberFormatException | ParseException e) {

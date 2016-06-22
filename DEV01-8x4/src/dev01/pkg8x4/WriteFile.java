@@ -22,34 +22,33 @@ import org.apache.log4j.Logger;
 public class WriteFile {
 
     //Logger4J
-
-    final static Logger logger = Logger.getLogger(WriteFile.class);
     //File name and type to write object into
-    private final String file = "entries.csv";
     //CSVWRITER
-    private CSVWriter writer;
     //LineNumberReader
-    private LineNumberReader lnr;
     //ArrayList with remaining items to write
-    List<Complaint> remainingItems;
+    final static Logger logger = Logger.getLogger(WriteFile.class);
+    private final String file = "entries.csv";
+    private CSVWriter writer;
+    private LineNumberReader lnr;
+    private List<Complaint> remainingItems;
 
     public void writeToFile(ArrayList<Complaint> complains) throws IOException {
         try {
             //Size of Complains ArratList
-            int sizeComplain = complains.size();
             //begin at index
-            int beginIndex = getAmountLines();
             //end at index
+            int sizeComplain = complains.size();
+            int beginIndex = getAmountLines();
             int endIndex = sizeComplain - beginIndex;
             //CSVWriter used from opencsv Library
             writer = new CSVWriter(new FileWriter(file, true), '\n');
             //Array of strings
             String[] entries = null;
             
-            if(endIndex != 0){
+            if(endIndex > 0){
                 remainingItems = complains.subList(beginIndex, endIndex);
                 entries = new String[remainingItems.size()];
-            } else{
+            } else if(endIndex == 0){
                 remainingItems = complains;
                 entries = new String[remainingItems.size()];
             }
@@ -61,15 +60,16 @@ public class WriteFile {
 
             //Write String[] to file
             writer.writeNext(entries);
+            
+            //Close writer
+            writer.close();
 
         } catch (Exception e) {
             logger.info(e);
-        } finally {
-            //Close writer
-            writer.close();
         }
     }
 
+    //Get total amount of lines in csv file
     private int getAmountLines() throws IOException {
         //Amount of lines in csv file
         int amount = 0;
@@ -78,13 +78,11 @@ public class WriteFile {
         try {
             logger.info("Starting reading lines...");
             //Get linenumber + 1 because it starts at zero
-            amount = lnr.getLineNumber();
+            amount = lnr.getLineNumber()+1;
             lnr.close();
+            
         } catch (FileNotFoundException ex) {
             logger.info(ex);
-        } finally {
-            lnr.close();
-            logger.info("Done reading lines...");
         }
 
         //Return total number of lines

@@ -40,11 +40,11 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-        //Put ArrayList of Complaint object from the parser into this arraylist
-        complaints = CSVParser.read();
-        ArrayList<Complaint> inputArray = startConvert();
-        
+
         try {
+            //Put ArrayList of Complaint object from the parser into this arraylist
+            complaints = CSVParser.read();
+            ArrayList<Complaint> inputArray = startConvert();
             startWrite(inputArray);
         } catch (IOException ex) {
             logger.info(ex);
@@ -80,7 +80,7 @@ public class Main extends PApplet {
         logger.info("Writing started.");
         writer.writeToFile(complaints);
         logger.info("Writing ended.");
-        
+
         System.exit(0);
     }
 }
