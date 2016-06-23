@@ -6,6 +6,7 @@
 package dev01.pkg8x4;
 
 import com.opencsv.CSVWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -26,11 +27,13 @@ public class WriteFile {
     //CSVWRITER
     //LineNumberReader
     //ArrayList with remaining items to write
+    //Boolean to set append to true or false
     final static Logger logger = Logger.getLogger(WriteFile.class);
-    private final String file = "entries.csv";
+    private final File file = new File("C:/dev/entries.csv");
     private CSVWriter writer;
     private LineNumberReader lnr;
     private List<Complaint> remainingItems;
+    public Boolean append;
 
     public void writeToFile(ArrayList<Complaint> complains) throws IOException {
         try {
@@ -40,33 +43,35 @@ public class WriteFile {
             int sizeComplain = complains.size();
             int beginIndex = getAmountLines();
             int endIndex = sizeComplain - beginIndex;
-            //CSVWriter used from opencsv Library
-            writer = new CSVWriter(new FileWriter(file, true), '\n');
-            //Array of strings
-            String[] entries = null;
             
             if(endIndex > 0){
+                append = true;
                 remainingItems = complains.subList(beginIndex, endIndex);
-                entries = new String[remainingItems.size()];
             } else if(endIndex == 0){
+                append = false;
                 remainingItems = complains;
-                entries = new String[remainingItems.size()];
             }
+            
+            String[] entries = new String[remainingItems.size()];
             
             //Put objects from ArrayList in the String Array
             for (int i = 0; i < remainingItems.size(); i++) {
                 entries[i] = remainingItems.get(i).toString();
             }
+            
+            //CSVWriter used from opencsv Library
+            writer = new CSVWriter(new FileWriter(file, append), '\n');
 
             //Write String[] to file
             writer.writeNext(entries);
             
-            //Close writer
-            writer.close();
-
         } catch (Exception e) {
             logger.info(e);
+        } finally {
+            //Close writer
+            writer.close();
         }
+        
     }
 
     //Get total amount of lines in csv file
@@ -78,13 +83,13 @@ public class WriteFile {
         try {
             logger.info("Starting reading lines...");
             //Get linenumber + 1 because it starts at zero
-            amount = lnr.getLineNumber()+1;
+            amount = lnr.getLineNumber();
             lnr.close();
             
         } catch (FileNotFoundException ex) {
             logger.info(ex);
         }
-
+        
         //Return total number of lines
         return amount;
     }

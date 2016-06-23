@@ -50,7 +50,7 @@ public class CSVParser {
 
         try {
             //if lines is higher than 2500, the max amount of queries a day is reached
-            while ((nextLine = reader.readNext()) != null && lines <= 2500) {
+            while ((nextLine = reader.readNext()) != null && lines <= 500) {
                 // nextLine[] is an array of values from the line
                 String Ingevoerd = nextLine[0];
                 Date Datum = sdf.parse(nextLine[1]);
@@ -72,14 +72,14 @@ public class CSVParser {
                 lines++;
             }
 
-            //Close reader
-            reader.close();
-
             logger.info("Done going through csv!");
             logger.info("Size Array: " + klachten.size());
 
         } catch (IOException | NumberFormatException | ParseException e) {
             logger.info(e);
+        } finally{
+            //Close reader
+            reader.close();
         }
 
         //Return ArrayList

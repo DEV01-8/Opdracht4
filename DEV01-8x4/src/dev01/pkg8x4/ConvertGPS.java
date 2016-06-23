@@ -9,6 +9,7 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 /**
@@ -30,13 +31,15 @@ public class ConvertGPS {
         
     public ArrayList<Complaint> parseAndConvert(ArrayList<Complaint> complains) throws Exception {
          //Context to put in API Key
-        GeoApiContext context = new GeoApiContext().setApiKey(apiKey1);
+        GeoApiContext context = new GeoApiContext().setApiKey(apiKey2);
 
         try {
             for (Complaint complain : complains) {
                 //Convert address and postal code to get Longitude and Latitude
                 GeocodingResult[] results = GeocodingApi.geocode(context,
                         complain.getPostcode() + ", " + complain.getPlaatsnaam() + ", " + country).await();
+                
+                context.setRetryTimeout(0, TimeUnit.MILLISECONDS);
 
                 //Latitude and Longitude from results Array
                 float lat = (float) results[0].geometry.location.lat;
