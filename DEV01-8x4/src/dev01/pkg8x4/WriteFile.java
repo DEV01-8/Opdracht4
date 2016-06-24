@@ -23,55 +23,56 @@ import org.apache.log4j.Logger;
 public class WriteFile {
 
     //Logger4J
-    //File name and type to write object into
-    //CSVWRITER
-    //LineNumberReader
-    //ArrayList with remaining items to write
-    //Boolean to set append to true or false
     final static Logger logger = Logger.getLogger(WriteFile.class);
+    //File name and type to write object into
     private final File file = new File("C:/dev/entries.csv");
+    //CSVWRITER
     private CSVWriter writer;
+    //LineNumberReader
     private LineNumberReader lnr;
+    //List with remaining items to write
     private List<Complaint> remainingItems;
+    //Boolean to set append to true or false
     public Boolean append;
 
-    public void writeToFile(ArrayList<Complaint> complains) throws IOException {
+    public void writeToFile(ArrayList<Complaint> complaints) throws IOException {
         try {
             //Size of Complains ArratList
+            int sizeComplain = complaints.size();
             //begin at index
-            //end at index
-            int sizeComplain = complains.size();
             int beginIndex = getAmountLines();
+            //end at index
             int endIndex = sizeComplain - beginIndex;
-            
-            if(endIndex > 0){
+
+            //If file is not empty, append, else do not append
+            if (endIndex > 0) {
                 append = true;
-                remainingItems = complains.subList(beginIndex, endIndex);
-            } else if(endIndex == 0){
+                remainingItems = complaints.subList(beginIndex, endIndex);
+            } else if (endIndex == 0) {
                 append = false;
-                remainingItems = complains;
+                remainingItems = complaints;
             }
-            
+
             String[] entries = new String[remainingItems.size()];
-            
+
             //Put objects from ArrayList in the String Array
             for (int i = 0; i < remainingItems.size(); i++) {
                 entries[i] = remainingItems.get(i).toString();
             }
-            
+
             //CSVWriter used from opencsv Library
-            writer = new CSVWriter(new FileWriter(file, append), '\n');
+            writer = new CSVWriter(new FileWriter(file, append), ';');
 
             //Write String[] to file
             writer.writeNext(entries);
-            
+
         } catch (Exception e) {
             logger.info(e);
         } finally {
             //Close writer
             writer.close();
         }
-        
+
     }
 
     //Get total amount of lines in csv file
@@ -85,11 +86,11 @@ public class WriteFile {
             //Get linenumber + 1 because it starts at zero
             amount = lnr.getLineNumber();
             lnr.close();
-            
+
         } catch (FileNotFoundException ex) {
             logger.info(ex);
         }
-        
+
         //Return total number of lines
         return amount;
     }

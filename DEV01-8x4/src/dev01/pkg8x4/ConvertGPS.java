@@ -29,12 +29,12 @@ public class ConvertGPS {
     String apiKey2 = "AIzaSyDUHwj3qaCGQbl7-giMhLld_LMhsSBf2vo";
     String apiKey3 = "AIzaSyCLKZ4WOJqER5kotwWB4UJuqYHDm4TB-A8";
         
-    public ArrayList<Complaint> parseAndConvert(ArrayList<Complaint> complains) throws Exception {
+    public ArrayList<Complaint> parseAndConvert(ArrayList<Complaint> complaints) throws Exception {
          //Context to put in API Key
-        GeoApiContext context = new GeoApiContext().setApiKey(apiKey2);
+        GeoApiContext context = new GeoApiContext().setApiKey(apiKey1);
 
         try {
-            for (Complaint complain : complains) {
+            for (Complaint complain : complaints) {
                 //Convert address and postal code to get Longitude and Latitude
                 GeocodingResult[] results = GeocodingApi.geocode(context,
                         complain.getPostcode() + ", " + complain.getPlaatsnaam() + ", " + country).await();

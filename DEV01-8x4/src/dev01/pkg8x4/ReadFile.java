@@ -20,69 +20,68 @@ import org.apache.log4j.Logger;
  *
  * @author Johan Bos <Johan Bos at jhnbos.nl>
  */
-public class CSVParser {
+public class ReadFile {
 
     //ArrayList to return
+    private final ArrayList<Complaint> complainArray = new ArrayList();
     //Logger4J
+    private final Logger logger = Logger.getLogger(ReadFile.class);
     //SimpleDateFormat
+    private final SimpleDateFormat sdf = new SimpleDateFormat("E MMM dd HH:mm:ss zzz yyyy");
     //Separators
-    //Skip first x amount of lines.
+    private final char[] separator = {';', ','};
     //Create filepath to csv
+    private final File path = new File("C:\\dev\\entries.csv");
     //CSVReader
-    private static final ArrayList<Complaint> complaints = new ArrayList();
-    private final static Logger logger = Logger.getLogger(CSVParser.class);
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-    private final static char[] separator = {';', ','};
-    private final static int skipLine = 1;
-    private final static File path = new File("C:\\dev\\klachten.csv");
-    private static CSVReader reader;
+    private CSVReader reader;
 
-    public static ArrayList<Complaint> read() throws IOException {
+    public ArrayList<Complaint> read() throws IOException {
         logger.info("Reading CSV...");
         sdf.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
 
         //read csv using opencsv library
-        reader = new CSVReader(new FileReader(path), separator[0], separator[1], skipLine);
+        reader = new CSVReader(new FileReader(path), separator[0], separator[1]);
         String[] nextLine;
 
         logger.info("Going through CSV...");
-        int lines = 0;
 
         try {
-            //if lines is higher than 2500, the max amount of queries a day is reached
-            while ((nextLine = reader.readNext()) != null && lines <= 20) {
+            while ((nextLine = reader.readNext()) != null) {
                 // nextLine[] is an array of values from the line
                 String Ingevoerd = nextLine[0];
                 Date Datum = sdf.parse(nextLine[1]);
                 int Aantal = Integer.parseInt(nextLine[2]);
-                String Postcode = nextLine[4];
-                String Plaats = nextLine[5];
-                String aardOverlast = nextLine[6];
-                String subOverlast = nextLine[7];
-                String subSubOverlast = nextLine[8];
-                Boolean terugKoppeling = Boolean.parseBoolean(nextLine[9]);
+                String Postcode = nextLine[3];
+                String Plaats = nextLine[4];
+                String aardOverlast = nextLine[5];
+                String subOverlast = nextLine[6];
+                String subSubOverlast = nextLine[7];
+                Boolean terugKoppeling = Boolean.parseBoolean(nextLine[8]);
+                float Latitude = Float.parseFloat(nextLine[9]);
+                float Longitude = Float.parseFloat(nextLine[10]);
 
                 //Create Complaint object and set values from above in it.
-                Complaint complaint = new Complaint(Ingevoerd, Datum, Aantal, Postcode,
+                Complaint complain = new Complaint(Ingevoerd, Datum, Aantal, Postcode,
                         Plaats, aardOverlast, subOverlast, subSubOverlast, terugKoppeling);
 
-                //Add Complaint object to ArrayList
-                complaints.add(complaint);
+                complain.setLatitude(Latitude);
+                complain.setLongitude(Longitude);
 
-                lines++;
+                //Add Complaint object to ArrayList
+                complainArray.add(complain);
             }
 
             logger.info("Done going through csv!");
-            logger.info("Size Array: " + complaints.size());
+            logger.info("Size Array: " + complainArray.size());
 
         } catch (IOException | NumberFormatException | ParseException e) {
             logger.info(e);
-        } finally{
+        } finally {
             //Close reader
             reader.close();
         }
 
         //Return ArrayList
-        return complaints;
+        return complainArray;
     }
 }
