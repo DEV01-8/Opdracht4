@@ -125,12 +125,11 @@ public class Complaint {
         this.Latitude = Latitude;
     }
 
+    /*
     @Override
     public String toString() {
-        //return "Complaint{" + "ingevoerd=" + ingevoerd + ", datum=" + datum + ", aantal=" + aantal + ", postcode=" + postcode + ", plaatsnaam=" + plaatsnaam + ", aardOverlast=" + aardOverlast + ", subOverlast=" + subOverlast + ", subSubaardOverlast=" + subSubaardOverlast + ", terugkoppeling=" + terugkoppeling + ", Latitude=" + Latitude + ", Longitude=" + Longitude + '}';
-        return ingevoerd + ";" + datum + ";" + aantal + ";" + postcode + ";" + plaatsnaam + ";" + aardOverlast + ";" + subOverlast + ";" + subSubaardOverlast + ";" + terugkoppeling + ";" + Latitude + ";" + Longitude;
-    }
-
-    
+        return "Complaint{" + "ingevoerd=" + ingevoerd + ", datum=" + datum + ", aantal=" + aantal + ", postcode=" + postcode + ", plaatsnaam=" + plaatsnaam + ", aardOverlast=" + aardOverlast + ", subOverlast=" + subOverlast + ", subSubaardOverlast=" + subSubaardOverlast + ", terugkoppeling=" + terugkoppeling + ", Latitude=" + Latitude + ", Longitude=" + Longitude + '}';
+        //return ingevoerd + ";" + datum + ";" + aantal + ";" + postcode + ";" + plaatsnaam + ";" + aardOverlast + ";" + subOverlast + ";" + subSubaardOverlast + ";" + terugkoppeling + ";" + Latitude + ";" + Longitude + ";";
+    }*/
 
 }

@@ -33,11 +33,13 @@ public class Main extends PApplet {
     //New ConvertGPS objetc
     private final ConvertGPS convert = new ConvertGPS();
     //CSVWriter to write arraylist items to csv file
-    private final WriteFile writer = new WriteFile();
+    private final WriteToFile writer = new WriteToFile();
     //ReadFile to return ArrayList of new csv
-    ReadFile read = new ReadFile();
+    private final ReadFromFile read = new ReadFromFile();
     //Unfolding map
-    UnfoldingMap map;
+    private UnfoldingMap map;
+    //Marker
+    private SimplePointMarker marker;
 
     /**
      * @param args the command line arguments
@@ -57,7 +59,7 @@ public class Main extends PApplet {
             complaints = CSVParser.read();
             ArrayList<Complaint> inputArray = startConvert();
             startWrite(inputArray);
-            markerPoints = read.read();
+            markerPoints = read.readCsvFile();
             
         } catch (IOException ex) {
             logger.info(ex);
@@ -72,7 +74,7 @@ public class Main extends PApplet {
 
     @Override
     public void settings() {
-        size(500, 500);
+        size(500, 500, FX2D);
     }
 
     @Override
@@ -99,16 +101,18 @@ public class Main extends PApplet {
     private void startWrite(ArrayList<Complaint> complaints) throws IOException {
         //Write items of newComplaints in a .csv file
         logger.info("Writing started.");
-        writer.writeToFile(complaints);
+        writer.writeCsvFile(complaints);
         logger.info("Writing ended.");
     }
     
     private void createMarkers(ArrayList<Complaint> complaints){
+        logger.info("complaints Size: " + complaints.size());
         for (int i = 0; i < complaints.size(); i++) {
             float longitude = (float)complaints.get(i).getLongitude();
             float latitude = (float)complaints.get(i).getLatitude();
-            Location location = new Location(longitude, latitude);
-            SimplePointMarker marker = new SimplePointMarker(location);
+            Location location = new Location(latitude, longitude);
+            marker = new SimplePointMarker(location);
+            marker.setColor(color(0, 0, 255, 255));
             
             map.addMarker(marker);
         }

@@ -32,9 +32,9 @@ public class CSVParser {
     private static final ArrayList<Complaint> complaints = new ArrayList();
     private final static Logger logger = Logger.getLogger(CSVParser.class);
     private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-    private final static char[] separator = {';', ','};
+    private final static char[] separator = {';', '\n'};
     private final static int skipLine = 1;
-    private final static File path = new File("C:\\dev\\klachten.csv");
+    private final static File path = new File("C:/dev/klachten.csv");
     private static CSVReader reader;
 
     public static ArrayList<Complaint> read() throws IOException {
@@ -50,7 +50,7 @@ public class CSVParser {
 
         try {
             //if lines is higher than 2500, the max amount of queries a day is reached
-            while ((nextLine = reader.readNext()) != null && lines <= 20) {
+            while ((nextLine = reader.readNext()) != null && lines < 500) {
                 // nextLine[] is an array of values from the line
                 String Ingevoerd = nextLine[0];
                 Date Datum = sdf.parse(nextLine[1]);
