@@ -66,9 +66,11 @@ public class CSVParser {
                 Complaint complaint = new Complaint(Ingevoerd, Datum, Aantal, Postcode,
                         Plaats, aardOverlast, subOverlast, subSubOverlast, terugKoppeling);
 
-                //Add Complaint object to ArrayList
-                complaints.add(complaint);
-
+                if (complaint.getAardOverlast().equals("Stank")) {
+                    //Add Complaint object to ArrayList
+                    complaints.add(complaint);
+                }
+                
                 lines++;
             }
 

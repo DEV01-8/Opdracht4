@@ -7,9 +7,11 @@ package dev01.pkg8x4;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.interactions.MouseHandler;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.utils.MapUtils;
+import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.apache.log4j.BasicConfigurator;
@@ -66,6 +68,7 @@ public class Main extends PApplet {
         }
 
         map = new UnfoldingMap(this, new Google.GoogleTerrainProvider());
+        map.zoomAndPanTo(10, new Location(51.917f, 4.481f));
         MapUtils.createDefaultEventDispatcher(this, map);
         
         createMarkers(markerPoints);
@@ -117,4 +120,16 @@ public class Main extends PApplet {
             map.addMarker(marker);
         }
     }
+    
+    @Override
+    public void mousePressed(){
+        if (mousePressed && (mouseButton == LEFT)) {
+            map.zoomIn();
+            map.panTo(new Location(map.getLocation(mouseX, mouseY)));
+        } else if (mousePressed && (mouseButton == RIGHT)) {
+            map.zoomOut();
+            map.panTo(new Location(map.getLocation(mouseX, mouseY)));
+        }
+    }
+
 }
