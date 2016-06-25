@@ -5,24 +5,20 @@
  */
 package dev01.pkg8x4;
 
-import de.fhpotsdam.unfolding.UnfoldingMap;
-import de.fhpotsdam.unfolding.geo.Location;
-import de.fhpotsdam.unfolding.interactions.MouseHandler;
-import de.fhpotsdam.unfolding.marker.SimplePointMarker;
-import de.fhpotsdam.unfolding.providers.Google;
-import de.fhpotsdam.unfolding.utils.MapUtils;
-import de.fhpotsdam.unfolding.utils.ScreenPosition;
+import static dev01.pkg8x4.Main.logger;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
-import processing.core.PApplet;
+import org.jdesktop.swingx.mapviewer.GeoPosition;
 
 /**
  *
  * @author Johan Bos <Johan Bos at jhnbos.nl>
  */
-public class Main extends PApplet {
+public class Main extends javax.swing.JFrame {
 
     //Logger4J
     final static Logger logger = Logger.getLogger(Main.class);
@@ -33,63 +29,38 @@ public class Main extends PApplet {
     //ArrayList to put in converted complaints in
     private ArrayList<Complaint> markerPoints;
     //CSVParser object
-    private CSVParser parser = new CSVParser();
+    private final CSVParser parser = new CSVParser();
     //New ConvertGPS object
     private final ConvertGPS convert = new ConvertGPS();
     //CSVWriter to write arraylist items to csv file
     private final WriteToFile writer = new WriteToFile();
     //ReadFile to return ArrayList of new csv
     private final ReadFromFile read = new ReadFromFile();
-    //Unfolding map
-    private UnfoldingMap map;
-    //Marker
-    private SimplePointMarker marker;
-    //String path to csv files
-    private final String filepath = "C:/dev/klachten.csv";
-    private final String filepath2 = "C:/dev/entries.csv";
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-        //Logger4J
-        BasicConfigurator.configure();
-        PApplet.main(new String[]{Main.class.getName()});
+    public Main() {
+        initComponents();
+        jPanel1.setSize(new Dimension(500, 500));
+        jXMapKit1.setSize(new Dimension(500, 500));
+        jXMapKit1.setDefaultProvider(org.jdesktop.swingx.JXMapKit.DefaultProviders.OpenStreetMaps);
+        jXMapKit1.setAddressLocation(new GeoPosition(51.918026, 4.481035));
+        jXMapKit1.setZoom(4);
+        jXMapKit1.setDataProviderCreditShown(true);
+        jXMapKit1.setName("jXMapKit1"); // NOI18N
+        jPanel1.add(jXMapKit1, BorderLayout.CENTER);
+        this.setTitle("Heatmap over stankoverlast");
     }
 
-    @Override
-    public void setup() {
-
+    private void startApp() {
         try {
             //Put ArrayList of Complaint object from the parser into this arraylist
             complaints = parser.read();
             ArrayList<Complaint> inputArray = startConvert();
             startWrite(inputArray);
-            markerPoints = read.readCsvFile(filepath2);
-            
+            createPoints();
+
         } catch (IOException ex) {
             logger.info(ex);
         }
-
-        //New Unfolding map
-        map = new UnfoldingMap(this, new Google.GoogleTerrainProvider());
-        map.zoomAndPanTo(10, new Location(51.917f, 4.481f));
-        MapUtils.createDefaultEventDispatcher(this, map);
-        
-        //Create markers
-        createMarkers(markerPoints);
-
-    }
-
-    @Override
-    public void settings() {
-        size(500, 500, FX2D);
-    }
-
-    @Override
-    public void draw() {
-        map.draw();
     }
 
     //Convert and parse objects from complaints ArrayList and put them in newComplaints ArrayList
@@ -97,11 +68,11 @@ public class Main extends PApplet {
         try {
             logger.info("Converting started.");
             newComplaints = convert.parseAndConvert(complaints);
-            
+
         } catch (Exception ex) {
             logger.info(ex);
         }
-        
+
         logger.info("Converting ended.");
 
         return newComplaints;
@@ -113,31 +84,97 @@ public class Main extends PApplet {
         writer.writeCsvFile(complaints);
         logger.info("Writing ended.");
     }
-    
-    //Create markers with longitude and latitude and put themm in the map
-    private void createMarkers(ArrayList<Complaint> complaints){
-        logger.info("complaints Size: " + complaints.size());
-        for (int i = 0; i < complaints.size(); i++) {
-            float longitude = (float)complaints.get(i).getLongitude();
-            float latitude = (float)complaints.get(i).getLatitude();
-            Location location = new Location(latitude, longitude);
-            marker = new SimplePointMarker(location);
-            marker.setColor(color(0, 0, 255, 255));
-            
-            map.addMarker(marker);
-        }
-    }
-    
-    //Zoom in and out
-    @Override
-    public void mousePressed(){
-        if (mousePressed && (mouseButton == LEFT)) {
-            map.zoomIn();
-            map.panTo(new Location(map.getLocation(mouseX, mouseY)));
-        } else if (mousePressed && (mouseButton == RIGHT)) {
-            map.zoomOut();
-            map.panTo(new Location(map.getLocation(mouseX, mouseY)));
-        }
+
+    //Create points to put in map
+    private void createPoints() {
+
     }
 
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jXMapKit1 = new org.jdesktop.swingx.JXMapKit();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(500, 500));
+
+        jXMapKit1.setMinimumSize(new java.awt.Dimension(500, 500));
+        jXMapKit1.setPreferredSize(new java.awt.Dimension(500, 500));
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jXMapKit1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jXMapKit1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+        //</editor-fold>
+
+        //Logger4J
+        BasicConfigurator.configure();
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Main().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel jPanel1;
+    private org.jdesktop.swingx.JXMapKit jXMapKit1;
+    // End of variables declaration//GEN-END:variables
 }
