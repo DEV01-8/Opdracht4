@@ -32,7 +32,9 @@ public class Main extends PApplet {
     private ArrayList<Complaint> newComplaints;
     //ArrayList to put in converted complaints in
     private ArrayList<Complaint> markerPoints;
-    //New ConvertGPS objetc
+    //CSVParser object
+    private CSVParser parser = new CSVParser();
+    //New ConvertGPS object
     private final ConvertGPS convert = new ConvertGPS();
     //CSVWriter to write arraylist items to csv file
     private final WriteToFile writer = new WriteToFile();
@@ -42,6 +44,9 @@ public class Main extends PApplet {
     private UnfoldingMap map;
     //Marker
     private SimplePointMarker marker;
+    //String path to csv files
+    private final String filepath = "C:/dev/klachten.csv";
+    private final String filepath2 = "C:/dev/entries.csv";
 
     /**
      * @param args the command line arguments
@@ -58,19 +63,21 @@ public class Main extends PApplet {
 
         try {
             //Put ArrayList of Complaint object from the parser into this arraylist
-            complaints = CSVParser.read();
+            complaints = parser.read();
             ArrayList<Complaint> inputArray = startConvert();
             startWrite(inputArray);
-            markerPoints = read.readCsvFile();
+            markerPoints = read.readCsvFile(filepath2);
             
         } catch (IOException ex) {
             logger.info(ex);
         }
 
+        //New Unfolding map
         map = new UnfoldingMap(this, new Google.GoogleTerrainProvider());
         map.zoomAndPanTo(10, new Location(51.917f, 4.481f));
         MapUtils.createDefaultEventDispatcher(this, map);
         
+        //Create markers
         createMarkers(markerPoints);
 
     }
@@ -85,10 +92,9 @@ public class Main extends PApplet {
         map.draw();
     }
 
+    //Convert and parse objects from complaints ArrayList and put them in newComplaints ArrayList
     private ArrayList<Complaint> startConvert() {
         try {
-            //Convert and parse objects from complaints ArrayList and
-            //put them in newComplaints ArrayList
             logger.info("Converting started.");
             newComplaints = convert.parseAndConvert(complaints);
             
@@ -101,13 +107,14 @@ public class Main extends PApplet {
         return newComplaints;
     }
 
+    //Write items of newComplaints in a .csv file
     private void startWrite(ArrayList<Complaint> complaints) throws IOException {
-        //Write items of newComplaints in a .csv file
         logger.info("Writing started.");
         writer.writeCsvFile(complaints);
         logger.info("Writing ended.");
     }
     
+    //Create markers with longitude and latitude and put themm in the map
     private void createMarkers(ArrayList<Complaint> complaints){
         logger.info("complaints Size: " + complaints.size());
         for (int i = 0; i < complaints.size(); i++) {
@@ -121,6 +128,7 @@ public class Main extends PApplet {
         }
     }
     
+    //Zoom in and out
     @Override
     public void mousePressed(){
         if (mousePressed && (mouseButton == LEFT)) {

@@ -24,18 +24,22 @@ public class ReadFromFile {
 
     //ArrayList to return
     private final ArrayList<Complaint> complaints = new ArrayList();
+    //ArrayList to return
+    private final ArrayList<Complaint> complainArray = new ArrayList();
     //Logger4J
     private final Logger logger = Logger.getLogger(ReadFromFile.class);
     //SimpleDateFormat
     private final SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd hh:mm:ss z yyyy", Locale.ENGLISH);
-    //Create filepath to csv
-    private final File file = new File("C:/dev/entries.csv");
+    private final SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy HH:mm");
     //Delimiter used in CSV file
-    private static final String COMMA_DELIMITER = ";";
+    private final String COMMA_DELIMITER = ";";
     //FileReader
     private BufferedReader fileReader;
 
-    public ArrayList<Complaint> readCsvFile() throws IOException {
+    public ArrayList<Complaint> readCsvFile(String filepath) throws IOException {
+        //Create filepath to csv
+        File file = new File(filepath);
+        
         try {
             String line = "";
 
@@ -82,5 +86,4 @@ public class ReadFromFile {
         return complaints;
 
     }
-
 }

@@ -29,15 +29,15 @@ public class CSVParser {
     //Skip first x amount of lines.
     //Create filepath to csv
     //CSVReader
-    private static final ArrayList<Complaint> complaints = new ArrayList();
-    private final static Logger logger = Logger.getLogger(CSVParser.class);
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-    private final static char[] separator = {';', '\n'};
-    private final static int skipLine = 1;
-    private final static File path = new File("C:/dev/klachten.csv");
-    private static CSVReader reader;
+    private final ArrayList<Complaint> complaints = new ArrayList();
+    private final Logger logger = Logger.getLogger(CSVParser.class);
+    private final SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+    private final char[] separator = {';', '\n'};
+    private final int skipLine = 1;
+    private final File path = new File("C:/dev/klachten.csv");
+    private CSVReader reader;
 
-    public static ArrayList<Complaint> read() throws IOException {
+    public ArrayList<Complaint> read() throws IOException {
         logger.info("Reading CSV...");
         sdf.setTimeZone(TimeZone.getTimeZone("Europe/Amsterdam"));
 

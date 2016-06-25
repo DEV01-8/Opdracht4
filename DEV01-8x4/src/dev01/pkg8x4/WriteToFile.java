@@ -22,18 +22,18 @@ import org.apache.log4j.Logger;
 public class WriteToFile {
 
     //Logger4J
-    final static Logger logger = Logger.getLogger(WriteToFile.class);
+    final Logger logger = Logger.getLogger(WriteToFile.class);
     //File name and type to write object into
     private final File file = new File("C:/dev/entries.csv");
     //Delimiter used in CSV file
-    private static final String COMMA_DELIMITER = ";";
-    private static final String NEW_LINE_SEPARATOR = "\n";
+    private final String COMMA_DELIMITER = ";";
+    private final String NEW_LINE_SEPARATOR = "\n";
     //ArrayList
     private List<Complaint> remainingItems = new ArrayList();
     //LineNumberReader
     private LineNumberReader lnr;
     //CSV file header
-    private static final String FILE_HEADER = "Ingevoerd;Datum;Aantal;Postcode;Plaatsnaam;Aard Overlast;"
+    private final String FILE_HEADER = "Ingevoerd;Datum;Aantal;Postcode;Plaatsnaam;Aard Overlast;"
             + "Sub Overlast;Sub SubAard Overlast;Terugkoppeling;Latitude;Longitude";
     //FileWriter
     private FileWriter fileWriter;
