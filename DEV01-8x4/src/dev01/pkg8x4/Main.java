@@ -7,11 +7,14 @@ package dev01.pkg8x4;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.providers.Google;
+import de.fhpotsdam.unfolding.providers.ImmoScout;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import processing.core.PApplet;
@@ -55,7 +58,6 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
-
         try {
             //Put ArrayList of Complaint object from the parser into this arraylist
             complaints = parser.read();
@@ -69,17 +71,21 @@ public class Main extends PApplet {
 
         //New Unfolding map
         map = new UnfoldingMap(this, new Google.GoogleTerrainProvider());
+
         map.zoomAndPanTo(10, new Location(51.917f, 4.481f));
+
         MapUtils.createDefaultEventDispatcher(this, map);
         
         //Create markers
         createMarkers(markerPoints);
-
+        createMarkerCrematoria();
+       
     }
-
+    
+   
     @Override
     public void settings() {
-        size(500, 500, FX2D);
+        size(700, 500, FX2D);
     }
 
     @Override
@@ -120,6 +126,43 @@ public class Main extends PApplet {
             marker.setColor(color(0, 0, 255, 255));
             
             map.addMarker(marker);
+        }
+    }
+    
+    //Create markers for crematoria with longitude and latitude and put themm in the map
+    private void createMarkerCrematoria(){
+        ArrayList<Location> crematoriaLocs = new ArrayList();
+        
+        crematoriaLocs.add(new Location(51.934116, 4.495517));
+        crematoriaLocs.add(new Location(51.956863, 4.401860));
+        crematoriaLocs.add(new Location(51.952843, 4.532323));
+        crematoriaLocs.add(new Location(51.860692, 4.305141));
+        crematoriaLocs.add(new Location(51.952843, 4.532323));
+        crematoriaLocs.add(new Location(51.956888, 4.399592));
+        crematoriaLocs.add(new Location(51.861627, 4.302023));
+        crematoriaLocs.add(new Location(51.844450, 4.146841));
+        crematoriaLocs.add(new Location(51.866175, 4.370530));
+        crematoriaLocs.add(new Location(51.914115, 4.375251));
+        crematoriaLocs.add(new Location(52.058103, 4.222917));
+        crematoriaLocs.add(new Location(52.023047, 4.311494));
+        crematoriaLocs.add(new Location(51.954123, 4.564180));
+        crematoriaLocs.add(new Location(52.021664, 4.325493));
+        crematoriaLocs.add(new Location(51.801510, 4.673141));
+        crematoriaLocs.add(new Location(51.867154, 4.605017));
+        crematoriaLocs.add(new Location(51.940138, 4.557817));
+        crematoriaLocs.add(new Location(51.995077, 4.517034));
+        crematoriaLocs.add(new Location(52.008895, 4.724828));
+        crematoriaLocs.add(new Location(52.008525, 4.733926));
+        crematoriaLocs.add(new Location(52.028571, 4.703199));
+        crematoriaLocs.add(new Location(51.888695, 4.552438));
+        crematoriaLocs.add(new Location(51.941163, 4.569214));
+        
+        for (int i = 0; i < crematoriaLocs.size(); i++) {
+            Location loc = crematoriaLocs.get(i);
+            Marker markers = new SimplePointMarker(loc) {};
+            markers.setColor(color(255, 0, 0, 255));
+            
+            map.addMarker(markers);
         }
     }
     
