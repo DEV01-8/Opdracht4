@@ -58,6 +58,8 @@ public class Main extends PApplet {
 
     @Override
     public void setup() {
+        surface.setTitle("Klachten over stankoverlast (Blauw) t.o.v. locaties crematoria (Rood)");
+
         try {
             //Put ArrayList of Complaint object from the parser into this arraylist
             complaints = parser.read();
