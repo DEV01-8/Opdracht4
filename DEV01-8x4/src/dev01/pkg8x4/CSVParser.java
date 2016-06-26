@@ -50,7 +50,7 @@ public class CSVParser {
 
         try {
             //if lines is higher than 2500, the max amount of queries a day is reached
-            while ((nextLine = reader.readNext()) != null && lines < 500) {
+            while ((nextLine = reader.readNext()) != null && lines < 2501) {
                 // nextLine[] is an array of values from the line
                 String Ingevoerd = nextLine[0];
                 Date Datum = sdf.parse(nextLine[1]);

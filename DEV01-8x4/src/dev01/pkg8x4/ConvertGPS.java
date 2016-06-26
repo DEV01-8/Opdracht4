@@ -31,7 +31,7 @@ public class ConvertGPS {
         
     public ArrayList<Complaint> parseAndConvert(ArrayList<Complaint> complaints) throws Exception {
          //Context to put in API Key
-        GeoApiContext context = new GeoApiContext().setApiKey(apiKey1);
+        GeoApiContext context = new GeoApiContext().setApiKey(apiKey2);
 
         try {
             for (Complaint complain : complaints) {
