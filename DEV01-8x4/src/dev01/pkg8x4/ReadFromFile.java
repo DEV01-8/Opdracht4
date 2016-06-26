@@ -35,11 +35,10 @@ public class ReadFromFile {
     private final String COMMA_DELIMITER = ";";
     //FileReader
     private BufferedReader fileReader;
+    //File to entries csv
+    File file = new File("C:/dev/entries.csv");
 
-    public ArrayList<Complaint> readCsvFile(String filepath) throws IOException {
-        //Create filepath to csv
-        File file = new File(filepath);
-        
+    public ArrayList<Complaint> readFile() throws IOException {
         try {
             String line = "";
 

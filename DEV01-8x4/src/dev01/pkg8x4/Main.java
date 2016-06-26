@@ -7,11 +7,9 @@ package dev01.pkg8x4;
 
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
-import de.fhpotsdam.unfolding.interactions.MouseHandler;
 import de.fhpotsdam.unfolding.marker.SimplePointMarker;
 import de.fhpotsdam.unfolding.providers.Google;
 import de.fhpotsdam.unfolding.utils.MapUtils;
-import de.fhpotsdam.unfolding.utils.ScreenPosition;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.apache.log4j.BasicConfigurator;
@@ -33,7 +31,7 @@ public class Main extends PApplet {
     //ArrayList to put in converted complaints in
     private ArrayList<Complaint> markerPoints;
     //CSVParser object
-    private CSVParser parser = new CSVParser();
+    private final CSVParser parser = new CSVParser();
     //New ConvertGPS object
     private final ConvertGPS convert = new ConvertGPS();
     //CSVWriter to write arraylist items to csv file
@@ -44,10 +42,7 @@ public class Main extends PApplet {
     private UnfoldingMap map;
     //Marker
     private SimplePointMarker marker;
-    //String path to csv files
-    private final String filepath = "C:/dev/klachten.csv";
-    private final String filepath2 = "C:/dev/entries.csv";
-
+    
     /**
      * @param args the command line arguments
      */
@@ -66,7 +61,7 @@ public class Main extends PApplet {
             complaints = parser.read();
             ArrayList<Complaint> inputArray = startConvert();
             startWrite(inputArray);
-            markerPoints = read.readCsvFile(filepath2);
+            markerPoints = read.readFile();
             
         } catch (IOException ex) {
             logger.info(ex);
